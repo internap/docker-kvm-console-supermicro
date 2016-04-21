@@ -1,7 +1,8 @@
 kvm-console-supermicro
 ======================
 
-[![](https://badge.imagelayers.io/internap/kvm-console-supermicro:latest.svg)](https://imagelayers.io/?images=internap/kvm-console-supermicro:latest 'Get your own badge on imagelayers.io')
+[![pulls](https://img.shields.io/docker/pulls/internap/kvm-console-supermicro.png?maxAge=86400)](https://hub.docker.com/r/internap/kvm-console-supermicro/) [![stars](https://img.shields.io/docker/stars/internap/kvm-console-supermicro.png?maxAge=86400)](https://hub.docker.com/r/internap/kvm-console-supermicro/)
+
 
 This docker image provides standard VNC on Supermicro's BMC using its native iKVM Viewer.  The iKVM Viewer is downloaded at runtime from the BMC itself to avoid version mismatches.
 
