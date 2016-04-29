@@ -14,24 +14,26 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-set -e
-set -o pipefail
-
 ip_address="$1"
 username=${2:-ADMIN}
 password=${3:-ADMIN}
 
 get_session_id() {
   local login_url="${proto}://${ip_address}/cgi/login.cgi"
-  curl --insecure -s -X POST "${login_url}" --data "name=${username}&pwd=${password}" -i | awk '/SID=[^;]/ { print $2 }'
+  curl --connect-timeout 2 --insecure -s -X POST "${login_url}" --data "name=${username}&pwd=${password}" -i | awk '/SID=[^;]/ { print $2 }'
 }
 
-proto=http
+proto=https
 session_id=$(get_session_id)
 if [ -z "${session_id}" ]; then
-  proto=https
+  proto=http
   session_id=$(get_session_id)
 fi
+
+[ "${session_id}" ] || exit 1
+
+set -e
+set -o pipefail
 
 # Download jnlp
 mkdir -p "workspace-${ip_address}"
