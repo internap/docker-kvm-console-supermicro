@@ -24,12 +24,12 @@ establish_reverse_proxy() {
     nc 127.0.0.1 5901 2>/dev/null
 }
 
-supervisorctl stop 'idle_timeout_job' > /dev/null 2>&1
+supervisorctl stop 'idle-timeout' > /dev/null 2>&1
 supervisorctl start 'console:*' > /dev/null 2>&1
 while [ $tries -gt 0 ]; do
     if establish_reverse_proxy; then
         if no_active_vnc_session; then
-            supervisorctl start 'idle_timeout_job' > /dev/null 2>&1
+            supervisorctl start 'idle-timeout' > /dev/null 2>&1
             supervisorctl stop 'console:*' > /dev/null 2>&1
         fi
         exit 0
