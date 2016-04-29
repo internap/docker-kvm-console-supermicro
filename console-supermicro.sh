@@ -14,5 +14,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-id -u kvm-console &>/dev/null || useradd --create-home --shell /bin/bash --user-group kvm-console
-exec /usr/bin/supervisord -n -c /etc/supervisor/supervisord.conf
+
+docker build -t internap/kvm-console-supermicro $(dirname ${0})
+
+id=$(docker run -P -d \
+    -e IPMI_ADDRESS=${1} \
+    -e IPMI_USERNAME=${2-ADMIN} \
+    -e IPMI_PASSWORD=${3-ADMIN} \
+    internap/kvm-console-supermicro)
+
+sleep 2
+vncviewer $(docker port $id | cut -d ' ' -f 3)
+docker rm --force $id
