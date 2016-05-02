@@ -14,8 +14,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-pid="$(pidof "$1")"
-[ "$pid" ]
-window_id=$(xdotool search --pid "$pid" --onlyvisible --limit 1 .+)
+window_id=$(xdotool search --name "$X11VNC_NAME")
+[ "$window_id" ]
 xdotool windowfocus "$window_id"
-x11vnc -display :1 -rfbport 5901 -xkb -shared -forever -id "$window_id" -clip 4096x4096+0+21 -desktop ""
+x11vnc -display :1 -rfbport 5901 -xkb -shared -forever \
+       -id "$window_id" -clip "$X11VNC_CLIP" -desktop ""

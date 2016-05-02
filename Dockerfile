@@ -24,5 +24,22 @@ RUN apt-get update && apt-get install -y --force-yes --no-install-recommends \
 ADD etc /etc
 ADD opt /opt
 
+# The delay (in secons) between connections before the container is terminated
+ENV CONSOLE_TTL "3600"
+
+# X11VNC_CLIP: The area of the application to show
+ENV X11VNC_CLIP "4096x4096+0+21"
+# The name of the application to publish with X11VNC
+ENV X11VNC_NAME "iKVM Viewer"
+
+# The username to use when connecting to the BMC
+ENV IPMI_USERNAME "ADMIN"
+# The password to use when connecting to the BMC
+ENV IPMI_PASSWORD "ADMIN"
+
+# The address of the BMC to connect (MANDATORY)
+# Define with `docker run <image_name> -e IPMI_ADDRESS=<address>`
+#ENV IPMI_ADDRESS "192.0.2.10"
+
 EXPOSE 5900
 ENTRYPOINT ["/opt/kvm-console/bin/startup.sh"]
