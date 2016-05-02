@@ -6,17 +6,23 @@ kvm-console-supermicro
 
 This docker image provides standard VNC on Supermicro's BMC using its native iKVM Viewer.  The iKVM Viewer is downloaded at runtime from the BMC itself to avoid version mismatches.
 
+Configuration
+-------------
+
+The following settings are configurable using env variables:
+
+ - X11VNC_NAME: The name of the application to publish with X11VNC
+ - X11VNC_CLIP: The area of the application to show
+ - CONSOLE_TTL: The delay (in secons) between connections before the container
+                is terminated
+ - IPMI_USENAME: The username to use when connecting to the BMC
+ - IPMI_PASSWORD: The password to use when connecting to the BMC
+ - IPMI_ADDRESS: The address of the BMC to connect to (MANDATORY)
+
 Usage
 -----
 
-    $ docker build -t internap/kvm-console-supermicro .
-    Successfully built fdfff106efbe
-    $ docker run -d -t -i -e IPMI_ADDRESS=192.0.2.10 -e IPMI_USERNAME=username -e IPMI_PASSWORD=password --publish-all internap/kvm-console-supermicro
-    fc4644be6959404d6d65252bb5b5e6ea8edc0b2019e43447b6b36e06da4d6ec0
-    $ docker ps
-    CONTAINER ID        IMAGE                                    COMMAND                    CREATED             STATUS              PORTS                     NAMES
-    fc4644be6959        internap/kvm-console-supermicro:latest   "/opt/kvm-console/bi   6 seconds ago       Up 6 seconds        0.0.0.0:32780->5900/tcp   nostalgic_mayer     
-    $ vncviewer 127.0.0.1:32780
+    $ console-supermicro.sh 192.0.2.10 unsername password
 
 Contributing
 ============
