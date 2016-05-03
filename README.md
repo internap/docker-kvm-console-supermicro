@@ -11,10 +11,11 @@ Configuration
 
 The following settings are configurable using env variables:
 
- - X11VNC_NAME: The name of the application to publish with X11VNC
  - X11VNC_CLIP: The area of the application to show
- - CONSOLE_TTL: The delay (in secons) between connections before the container
-                is terminated
+ - X11VNC_TITLE: Desktop title shown by X11VNC (default to "")
+ - SPLASH_IMAGE: Image to show until we get the application working
+ - SPLASH_SIZE: Screen size to show until we get the application working (default to splash image size or 1x1)
+ - CONSOLE_TTL: The delay (in seconds) between connections before the container is terminated
  - IPMI_USENAME: The username to use when connecting to the BMC
  - IPMI_PASSWORD: The password to use when connecting to the BMC
  - IPMI_ADDRESS: The address of the BMC to connect to (MANDATORY)

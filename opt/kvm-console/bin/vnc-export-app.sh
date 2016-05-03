@@ -19,13 +19,18 @@ while true; do
     read winid width height < <(xwininfo -root -tree \
         | grep -iE 'Java iKVM Viewer.+Resolution' \
         | sed 's/^\(.*\)".*Resolution \([0-9]*\) X \([0-9]*\).*/\1 \2 \3/g')
+
     [ -z "$winid" ] && [ -z "$width" ] && [ -z "$height" ] && continue
+
     width=$((width + 4))
     height=$((height + 24))
     actual_width=$(x11vnc -query wdpy_x 2>/dev/null | cut -d':' -f 2)
     actual_height=$(x11vnc -query wdpy_y 2>/dev/null | cut -d':' -f 2)
+
     [ "$width" -eq "$actual_width" ] && [ "$height" -eq "$actual_height" ] && continue
-    xdotool windowsize $winid $(( width + 1 )) $(( height + 1 ))
-    sleep .1
+
+    xdotool windowfocus "$winid"
+    x11vnc -remote "id:$winid" --sync
+    x11vnc -remote "clip:$X11VNC_CLIP" --sync
     xdotool windowsize $winid $width $height
 done

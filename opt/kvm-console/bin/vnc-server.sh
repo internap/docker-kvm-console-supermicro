@@ -14,8 +14,24 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-window_id=$(xdotool search --name "$X11VNC_NAME")
-[ "$window_id" ]
-xdotool windowfocus "$window_id"
-x11vnc -display :1 -rfbport 5901 -xkb -shared -forever \
-       -id "$window_id" -clip "$X11VNC_CLIP" -desktop ""
+splash_width=1
+splash_height=1
+
+read screen_width screen_height < <(xdotool getdisplaygeometry)
+
+if [ "${SPLASH_IMAGE-}" ]; then
+    read splash_width splash_height < <(\
+        xview -identify $SPLASH_IMAGE | \
+        sed 's/.* \([0-9]*\)x\([0-9]*\) .*/\1 \2/g')
+    xview -center -onroot $SPLASH_IMAGE
+fi
+
+if [ "${SPLASH_SIZE-}" ]; then
+    read splash_width splash_height < <(echo $SPLASH_SIZE | tr 'x' ' ')
+fi
+
+clip_x=$((screen_width/2-splash_width/2))
+clip_y=$((screen_height/2-splash_height/2))
+splash_clip=${splash_width}x${splash_height}+${clip_x}+${clip_y}
+
+exec x11vnc -rfbport 5901 -xkb -shared -forever -desktop "${X11VNC_TITLE-}" -clip $splash_clip
