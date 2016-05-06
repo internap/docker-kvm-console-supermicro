@@ -18,7 +18,7 @@ ENV HOME /root
 
 RUN apt-get update && apt-get install -y --force-yes --no-install-recommends \
     supervisor xinetd x11vnc xvfb xdotool x11-utils curl unzip openjdk-7-jre \
-    xmlstarlet iptables xloadimage \
+    x11-xserver-utils xmlstarlet iptables xloadimage \
     && apt-get autoclean && apt-get autoremove && rm -rf /var/lib/apt/lists/*
 
 ADD etc /etc
