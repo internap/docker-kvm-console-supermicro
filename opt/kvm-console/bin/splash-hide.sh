@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # Copyright 2016 Internap.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,14 +14,4 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-[program:x11-server]
-priority=10
-directory=/
-command=/usr/bin/Xvfb :1 -screen 0 1200x800x16 -dpms
-user=kvm-console
-autostart=false
-autorestart=true
-stopsignal=QUIT
-stdout_logfile=/var/log/x11-server.log
-redirect_stderr=true
-
+kill $(pidof xview)

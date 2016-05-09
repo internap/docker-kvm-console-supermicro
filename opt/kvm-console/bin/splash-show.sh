@@ -1,4 +1,4 @@
-#!/bin/bash -e
+#!/bin/bash
 
 # Copyright 2016 Internap.
 #
@@ -14,26 +14,24 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-splash_width=1
-splash_height=1
 
 read screen_width screen_height < <(xdotool getdisplaygeometry)
 
-[ "${SPLASH_IMAGE-}" ] && \
-    read splash_width splash_height < <(\
+if [ "${SPLASH_IMAGE-}" ]; then
+    read image_width image_height < <(\
         xview -identify $SPLASH_IMAGE | \
         sed 's/.* \([0-9]*\)x\([0-9]*\) .*/\1 \2/g')
+    
+    splash_width=$image_width
+    splash_width=$image_height
+    image_clip_x=$((screen_width/2-image_width/2))
+    image_clip_y=$((screen_height/2-image_height/2))
+    image_clip=${image_width}x${image_height}+${image_clip_x}+${image_clip_y}
 
-[ "${SPLASH_SIZE-}" ] && \
-    read splash_width splash_height < <(echo $SPLASH_SIZE | tr 'x' ' ')
-
-clip_x=$((screen_width/2-splash_width/2))
-clip_y=$((screen_height/2-splash_height/2))
-splash_clip=${splash_width}x${splash_height}+${clip_x}+${clip_y}
-
-/opt/kvm-console/bin/splash-show.sh
-
-# Disable the screen saver
-xset s off s reset
-
-exec x11vnc -rfbport 5901 -xkb -shared -forever -desktop "${X11VNC_TITLE-}" -clip $splash_clip
+    xview -center -onroot $SPLASH_IMAGE
+    xview $SPLASH_IMAGE -geometry $image_clip &
+    xview_pid=$!
+    xview_winid=$(xdotool search --sync --name $SPLASH_IMAGE)
+    while xdotool windowraise $xview_winid; do true; done &
+    (sleep ${SPLASH_TIMEOUT-20} && kill $xview_pid) &
+fi
