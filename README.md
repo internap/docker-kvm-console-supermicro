@@ -23,7 +23,7 @@ The following settings are configurable using env variables:
 Usage
 -----
 
-    $ console-supermicro.sh 192.0.2.10 unsername password
+    $ console-supermicro.sh 192.0.2.10 username password
 
 Contributing
 ============
