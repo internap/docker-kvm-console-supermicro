@@ -14,9 +14,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-ip_address="$1"
-username=${2:-ADMIN}
-password=${3:-ADMIN}
+ip_address="${IPMI_ADDRESS}"
+username=${IPMI_USERNAME:-ADMIN}
+password=${IPMI_PASSWORD:-ADMIN}
 
 get_session_id() {
   local login_url="${proto}://${ip_address}/cgi/login.cgi"
