@@ -6,7 +6,7 @@
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#     http://www.apache.org/licenses/LICENSE-2.0
+#	 http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -22,10 +22,10 @@ _console_supermicro() {
 	docker build -t internap/kvm-console-supermicro $(dirname ${0})
 
 	id=$(docker run -P -d \
-    -e IPMI_ADDRESS=${1} \
-    -e IPMI_USERNAME=${2-ADMIN} \
-    -e IPMI_PASSWORD=${3-ADMIN} \
-    internap/kvm-console-supermicro)
+	-e IPMI_ADDRESS=${1} \
+	-e IPMI_USERNAME=${2-ADMIN} \
+	-e IPMI_PASSWORD=${3-ADMIN} \
+	internap/kvm-console-supermicro)
 	if [ "" = "${id}" ] ; then
 		echo could not get containter id:
 		docker ps | grep internap/kvm-console-supermicro
