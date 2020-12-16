@@ -22,6 +22,8 @@ while true; do
     [ -z "$winid" ] && [ -z "$width" ] && [ -z "$height" ] && \
         sleep 1 && continue
 
+	echo "winid is ${winid}: ${width} x ${height}"
+
     width=$((width + 4))
     height=$((height + 24))
     actual_width=$(x11vnc -query wdpy_x 2>/dev/null | cut -d':' -f 2)
@@ -30,9 +32,28 @@ while true; do
     [ "$width" -eq "$actual_width" ] && [ "$height" -eq "$actual_height" ] && \
         sleep 1 && continue
 
+	echo "${width} == ${actual_width} and ${height} == ${actual_height}"
+	echo "clip to ${X11VNC_CLIP}"
+
     xdotool windowfocus $winid windowsize $winid $width $height
     x11vnc -remote "clip:$X11VNC_CLIP" --sync
     x11vnc -remote "id:$winid" --sync
 
-    /opt/kvm-console/bin/splash-hide.sh
+	echo "hide the splash screen"
+	pid=$( pidof xview)
+	if [ "" = "${pid}" ] ; then
+		echo xview is not running
+	else
+		echo stop xview on ${pid}
+		kill ${pid}
+		pid=$( pidof xview)
+		if [ "" = "${pid}" ] ; then
+			echo "stopped xview"
+			exit 0
+		else 
+			echo could not stop xview on ${pid}
+		fi
+	fi
+
+	sleep 3
 done
