@@ -12,14 +12,22 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM ubuntu:14.04
+#FROM ubuntu:14.04
+FROM ubuntu:20.04
 ENV DEBIAN_FRONTEND noninteractive
 ENV HOME /root
 
 RUN apt-get update && apt-get install -y --force-yes --no-install-recommends \
-    supervisor xinetd x11vnc xvfb xdotool x11-utils curl unzip openjdk-7-jre \
-    x11-xserver-utils xmlstarlet iptables xloadimage \
+    supervisor xinetd x11vnc xvfb xdotool x11-utils curl unzip openjdk-8-jre \
+    x11-xserver-utils xmlstarlet iptables xloadimage git \
     && apt-get autoclean && apt-get autoremove && rm -rf /var/lib/apt/lists/*
+
+# from https://github.com/vhammond-inap/nojava-ipmi-kvm/tree/BM-20/vnc-docker-container/docker/Dockerfile_openjdk-7
+RUN NOVNC_VERSION="1.1.0" && \
+    curl -o /tmp/novnc.tar.gz  -L "https://github.com/novnc/noVNC/archive/v${NOVNC_VERSION}.tar.gz" && \
+    tar -xvf /tmp/novnc.tar.gz -C /opt/ && \
+    ln -s "/opt/noVNC-${NOVNC_VERSION}/utils/launch.sh" /usr/local/bin/launch_novnc && \
+    rm -f /tmp/novnc.tar.gz
 
 ADD etc /etc
 ADD opt /opt
@@ -45,5 +53,6 @@ ENV IPMI_PASSWORD "ADMIN"
 # Define with `docker run <image_name> -e IPMI_ADDRESS=<address>`
 #ENV IPMI_ADDRESS "192.0.2.10"
 
-EXPOSE 5900
+#EXPOSE 5900
+EXPOSE 8080
 ENTRYPOINT ["/opt/kvm-console/bin/startup.sh"]

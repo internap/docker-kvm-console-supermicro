@@ -15,4 +15,6 @@
 # limitations under the License.
 
 id -u kvm-console &>/dev/null || useradd --create-home --shell /bin/bash --user-group kvm-console
+chown -R kvm-console.kvm-console /opt/noVNC*
+
 exec /usr/bin/supervisord -n -c /etc/supervisor/supervisord.conf

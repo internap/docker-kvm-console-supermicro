@@ -14,15 +14,37 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+_console_supermicro() {
+	if [ 0 = ${#} ] || [ 3 -lt ${#} ] ; then
+		echo 'usage: console-supermicro.sh <host> [username] [password]'
+		return 
+	fi
+	docker build -t internap/kvm-console-supermicro $(dirname ${0})
 
-docker build -t internap/kvm-console-supermicro $(dirname ${0})
-
-id=$(docker run -P -d \
+	id=$(docker run -P -d \
     -e IPMI_ADDRESS=${1} \
     -e IPMI_USERNAME=${2-ADMIN} \
     -e IPMI_PASSWORD=${3-ADMIN} \
     internap/kvm-console-supermicro)
+	if [ "" = "${id}" ] ; then
+		echo could not get containter id:
+		docker ps | grep internap/kvm-console-supermicro
+		return 1
+	fi
 
-sleep 2
-vncviewer $(docker port $id | cut -d ' ' -f 3)
-docker rm --force $id
+	sleep 2
+
+	local port=$( docker port $id | sed 's,.*:,,' )
+	echo -----------------------------------------------------------------------------
+	echo "http://localhost:${port}/vnc.html?host=localhost&port=${port}"
+	echo -----------------------------------------------------------------------------
+
+	echo hit enter to end me
+	read
+
+	docker rm --force ${id}
+
+	echo bye
+}
+
+_console_supermicro ${*}

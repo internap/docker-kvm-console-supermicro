@@ -36,4 +36,11 @@ splash_clip=${splash_width}x${splash_height}+${clip_x}+${clip_y}
 # Disable the screen saver
 xset s off s reset
 
-exec x11vnc -rfbport 5901 -xkb -shared -forever -desktop "${X11VNC_TITLE-}" -clip $splash_clip
+_run_novnc() {
+	sleep 3
+	supervisorctl start novnc
+}
+_run_novnc 2>&1 | tee -a /tmp/novnc.txt &
+
+exec x11vnc -rfbport 5900 -xkb -shared -forever -desktop "${X11VNC_TITLE-}" -clip $splash_clip
+#valerie: exec x11vnc -rfbport 5901 -xkb -shared -forever -desktop "${X11VNC_TITLE-}" -clip $splash_clip
