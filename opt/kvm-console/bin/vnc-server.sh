@@ -42,5 +42,5 @@ _run_novnc() {
 }
 _run_novnc 2>&1 | tee -a /tmp/novnc.txt &
 
-exec x11vnc -rfbport 5900 -xkb -shared -forever -desktop "${X11VNC_TITLE-}" -clip $splash_clip
-#valerie: exec x11vnc -rfbport 5901 -xkb -shared -forever -desktop "${X11VNC_TITLE-}" -clip $splash_clip
+x11vnc -storepasswd ${VNC_PASSWORD} /tmp/vnc-password.txt
+exec x11vnc -rfbport 5900 -rfbauth /tmp/vnc-password.txt --xkb -shared -forever -desktop "${X11VNC_TITLE-}" -clip $splash_clip

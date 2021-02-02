@@ -41,15 +41,18 @@ ENV SPLASH_IMAGE ""
 # Screen size to show until we get the application working
 ENV SPLASH_SIZE ""
 
+# The VNC password to use
+ENV VNC_PASSWORD "no-password"
+
 # The username to use when connecting to the BMC
-#ENV IPMI_USERNAME "ADMIN"
+ENV IPMI_USERNAME "ADMIN"
 # The password to use when connecting to the BMC
-#ENV IPMI_PASSWORD "ADMIN"
+ENV IPMI_PASSWORD "ADMIN"
 
 # The address of the BMC to connect (MANDATORY)
 # Define with `docker run <image_name> -e IPMI_ADDRESS=<address>`
 #ENV IPMI_ADDRESS "192.0.2.10"
 
-#EXPOSE 5900
+EXPOSE 5900
 EXPOSE 8080
 ENTRYPOINT ["/opt/kvm-console/bin/startup.sh"]
