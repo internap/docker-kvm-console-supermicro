@@ -53,6 +53,6 @@ ENV IPMI_PASSWORD "ADMIN"
 # Define with `docker run <image_name> -e IPMI_ADDRESS=<address>`
 #ENV IPMI_ADDRESS "192.0.2.10"
 
-EXPOSE 5900
+#EXPOSE 5900
 EXPOSE 8080
 ENTRYPOINT ["/opt/kvm-console/bin/startup.sh"]
