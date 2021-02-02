@@ -19,7 +19,7 @@ _console_supermicro() {
 		echo 'usage: console-supermicro.sh <host> [username] [password]'
 		return 
 	fi
-	docker build -t internap/kvm-console-supermicro $(dirname ${0})
+	docker build -t internap/kvm-console-supermicro $(dirname ${0}) || return ${?}
 
 	id=$(docker run -P -d \
 	-e IPMI_ADDRESS=${1} \
