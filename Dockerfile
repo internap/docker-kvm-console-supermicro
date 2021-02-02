@@ -17,20 +17,17 @@ FROM ubuntu:20.04
 ENV DEBIAN_FRONTEND noninteractive
 ENV HOME /root
 
-RUN apt-get update && apt-get install -y --force-yes --no-install-recommends \
+RUN apt-get update && apt-get install -yyq --no-install-recommends \
     supervisor xinetd x11vnc xvfb xdotool x11-utils curl unzip openjdk-8-jre \
-    x11-xserver-utils xmlstarlet iptables xloadimage git \
-    && apt-get autoclean && apt-get autoremove && rm -rf /var/lib/apt/lists/*
-
-# from https://github.com/vhammond-inap/nojava-ipmi-kvm/tree/BM-20/vnc-docker-container/docker/Dockerfile_openjdk-7
-RUN NOVNC_VERSION="1.1.0" && \
-    curl -o /tmp/novnc.tar.gz  -L "https://github.com/novnc/noVNC/archive/v${NOVNC_VERSION}.tar.gz" && \
-    tar -xvf /tmp/novnc.tar.gz -C /opt/ && \
-    ln -s "/opt/noVNC-${NOVNC_VERSION}/utils/launch.sh" /usr/local/bin/launch_novnc && \
-    rm -f /tmp/novnc.tar.gz
+    x11-xserver-utils xmlstarlet iptables xloadimage git python3-pip \
+	&& pip3 install numpy \
+    && apt-get autoclean && apt-get autoremove && rm -rf /var/lib/apt/lists/* \
+	|| exit ${?}
 
 ADD etc /etc
 ADD opt /opt
+
+RUN tar xfz /opt/kvm-console/noVNC.tgz -C /opt/kvm-console
 
 # The delay (in seconds) between connections before the container is terminated
 ENV CONSOLE_TTL "3600"
@@ -45,9 +42,9 @@ ENV SPLASH_IMAGE ""
 ENV SPLASH_SIZE ""
 
 # The username to use when connecting to the BMC
-ENV IPMI_USERNAME "ADMIN"
+#ENV IPMI_USERNAME "ADMIN"
 # The password to use when connecting to the BMC
-ENV IPMI_PASSWORD "ADMIN"
+#ENV IPMI_PASSWORD "ADMIN"
 
 # The address of the BMC to connect (MANDATORY)
 # Define with `docker run <image_name> -e IPMI_ADDRESS=<address>`
