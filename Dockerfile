@@ -49,9 +49,14 @@ ENV IPMI_USERNAME "ADMIN"
 # The password to use when connecting to the BMC
 ENV IPMI_PASSWORD "ADMIN"
 
+# The noVNC inactivity timeout (in seconds)
+ENV INACTIVITY_TIMEOUT 1800
+
 # The address of the BMC to connect (MANDATORY)
 # Define with `docker run <image_name> -e IPMI_ADDRESS=<address>`
 #ENV IPMI_ADDRESS "192.0.2.10"
+
+HEALTHCHECK --interval=10s --retries=3 --start-period=30s CMD /opt/kvm-console/bin/activity-watcher.sh
 
 #EXPOSE 5900
 EXPOSE 8080

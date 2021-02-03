@@ -5,6 +5,7 @@ export COMMAND="${DIRECTORY}/utils/launch.sh"
 
 export LISTEN_PORT=8080
 export VNC_URI="localhost:5900"
+export VNC_TIMEOUT=${INACTIVITY_TIMEOUT:1800}
 
 _novnc_main() {
 	cd ${DIRECTORY} || return {?}
@@ -19,7 +20,7 @@ _novnc_main() {
 }
 
 _novnc_basic() {
-	${COMMAND} --web ${DIRECTORY} --listen ${LISTEN_PORT} --vnc ${VNC_URI}
+	${COMMAND} --web ${DIRECTORY} --listen ${LISTEN_PORT} --vnc ${VNC_URI} --idle-timeout ${VNC_TIMEOUT}
 }
 
 _novnc_tls() {
@@ -31,6 +32,7 @@ _novnc_tls() {
 		--key /private-key.key \
 		--ssl-only \
 		--web ${DIRECTORY}
+		--idle-timeout ${VNC_TIMEOUT}
 }
 
 _novnc_main ${*}
