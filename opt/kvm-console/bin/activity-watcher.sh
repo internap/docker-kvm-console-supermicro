@@ -9,9 +9,9 @@ _activity_watcher_main() {
 	if [ -f "${LOG_FILE}" ] ; then
 		local idle_count=$( grep -c "${EXPRESSION}" "${LOG_FILE}" ) || return ${?}
 		if [ "0" = "${idle_count}" ] ; then
-			_activity_watcher_out "novcs is still running"
+			_activity_watcher_out "novnc is still running"
 		else
-			_activity_watcher_out "novcs idle timeout kicked in"
+			_activity_watcher_out "novnc idle timeout kicked in"
 			status=${idle_count}
 		fi
 	else
