@@ -18,7 +18,7 @@ ENV DEBIAN_FRONTEND noninteractive
 ENV HOME /root
 
 RUN apt-get update && apt-get install -yyq --no-install-recommends \
-    supervisor xinetd x11vnc xvfb xdotool x11-utils curl unzip openjdk-8-jre \
+    supervisor x11vnc xvfb xdotool x11-utils curl unzip openjdk-8-jre \
     x11-xserver-utils xmlstarlet iptables xloadimage git python3-pip \
 	&& pip3 install numpy \
     && apt-get autoclean && apt-get autoremove && rm -rf /var/lib/apt/lists/* \
