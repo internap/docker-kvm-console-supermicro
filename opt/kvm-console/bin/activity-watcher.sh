@@ -9,9 +9,9 @@ _activity_watcher_main() {
 	if [ -f "${LOG_FILE}" ] ; then
 		local idle_count=$( grep -c "${EXPRESSION}" "${LOG_FILE}" ) || return ${?}
 		if [ "0" = "${idle_count}" ] ; then
-			_activity_watcher_out "novnc is still running"
+			_activity_watcher_out "novnc is running"
 		else
-			_activity_watcher_out "novnc idle timeout kicked in"
+			_activity_watcher_out "novnc idled out."
 			status=${idle_count}
 		fi
 	else
@@ -24,7 +24,7 @@ _activity_watcher_main() {
 		_activity_watcher_out "java is not running"
 		let status=${status}+1000
 	else
-		_activity_watcher_out "java is running"
+		_activity_watcher_out "java is running...."
 	fi
 
 	return ${status}
