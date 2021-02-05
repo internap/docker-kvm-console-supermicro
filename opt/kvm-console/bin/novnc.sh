@@ -5,7 +5,7 @@ export COMMAND="${DIRECTORY}/utils/launch.sh"
 
 export LISTEN_PORT=8080
 export VNC_URI="localhost:5900"
-export VNC_TIMEOUT=${INACTIVITY_TIMEOUT:1800}
+export VNC_TIMEOUT=${INACTIVITY_TIMEOUT-1800}
 
 _novnc_main() {
 	cd ${DIRECTORY} || return {?}
