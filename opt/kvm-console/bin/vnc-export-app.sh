@@ -14,7 +14,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-while true; do
+first_time=1
+for((i=0;i<1;i--)) ; do
     read winid width height < <(xwininfo -root -tree \
         | grep -iE 'Java iKVM Viewer.+Resolution' \
         | sed 's/^\(.*\)".*Resolution \([0-9]*\) X \([0-9]*\).*/\1 \2 \3/g')
@@ -43,6 +44,7 @@ while true; do
 	pid=$( pidof xview)
 	if [ "" = "${pid}" ] ; then
 		echo xview is not running
+		exit 0
 	else
 		echo stop xview on ${pid}
 		kill ${pid}
@@ -55,5 +57,5 @@ while true; do
 		fi
 	fi
 
-	sleep 3
+	sleep 1
 done
