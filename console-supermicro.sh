@@ -35,10 +35,10 @@ _console_supermicro() {
 	sleep 2
 
 	local port=$( docker port $id | sed 's,.*:,,' )
-	echo -----------------------------------------------------------------------------
-	# TODO: add password for vnc... (&password=xxx)
-	echo "http://localhost:${port}/vnc.html?host=localhost&port=${port}&autoconnect=true"
-	echo -----------------------------------------------------------------------------
+	local url="http://localhost:${port}/vnc.html?host=localhost&port=${port}&autoconnect=true&password=no-password"
+	echo ${url} | sed 's,.,-,g'
+	echo ${url}
+	echo ${url} | sed 's,.,-,g'
 
 	echo hit enter to end me
 	read
