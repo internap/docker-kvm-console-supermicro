@@ -14,13 +14,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-while true; do
+first_time=1
+for((i=0;i<1;i--)) ; do
     read winid width height < <(xwininfo -root -tree \
         | grep -iE 'Java iKVM Viewer.+Resolution' \
         | sed 's/^\(.*\)".*Resolution \([0-9]*\) X \([0-9]*\).*/\1 \2 \3/g')
 
     [ -z "$winid" ] && [ -z "$width" ] && [ -z "$height" ] && \
         sleep 1 && continue
+
+	echo "winid is ${winid}: ${width} x ${height}"
 
     width=$((width + 4))
     height=$((height + 24))
@@ -30,9 +33,29 @@ while true; do
     [ "$width" -eq "$actual_width" ] && [ "$height" -eq "$actual_height" ] && \
         sleep 1 && continue
 
+	echo "${width} == ${actual_width} and ${height} == ${actual_height}"
+	echo "clip to ${X11VNC_CLIP}"
+
     xdotool windowfocus $winid windowsize $winid $width $height
     x11vnc -remote "clip:$X11VNC_CLIP" --sync
     x11vnc -remote "id:$winid" --sync
 
-    /opt/kvm-console/bin/splash-hide.sh
+	echo "hide the splash screen"
+	pid=$( pidof xview)
+	if [ "" = "${pid}" ] ; then
+		echo xview is not running
+		exit 0
+	else
+		echo stop xview on ${pid}
+		kill ${pid}
+		pid=$( pidof xview)
+		if [ "" = "${pid}" ] ; then
+			echo "stopped xview"
+			exit 0
+		else 
+			echo could not stop xview on ${pid}
+		fi
+	fi
+
+	sleep 1
 done
