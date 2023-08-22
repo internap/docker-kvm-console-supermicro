@@ -27,7 +27,7 @@ _console_supermicro() {
 	-e IPMI_PASSWORD=${3-ADMIN} \
 	internap/kvm-console-supermicro)
 	if [ "" = "${id}" ] ; then
-		echo could not get containter id:
+		echo could not get container id:
 		docker ps | grep internap/kvm-console-supermicro
 		return 1
 	fi
